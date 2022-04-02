@@ -1,17 +1,19 @@
 import React from "react";
-import CategoryRow from "./CategoryRow";
 import ItemCard from "./ItemCard";
+import { Colors } from "../constants/Colors";
 
-function ItemSlider() {
+function ItemSlider({ category, product }) {
   return (
-    <div className="flex flex-col justify-center p-10">
-      <CategoryRow />
-      <div className="w-full flex flex-row items-center overflow-x-auto">
-        <ItemCard />
-        <ItemCard />
-        <ItemCard />
-        <ItemCard />
-        <ItemCard />
+    <div
+      className={`flex flex-col w-full h-full justify-center px-10 py-5 bg-[${Colors.primary}]`}
+    >
+      <div className="flex flex-row justify-between items-center px-10">
+        <p className="text-2xl font-semibold font-poppins">{category.name}</p>
+      </div>
+      <div className="flex flex-nowrap w-3/2 items-center p-5 overflow-x-auto no-scrollbar">
+        {product.map((item, key) => (
+          <ItemCard item={item} key={item.id} />
+        ))}
       </div>
     </div>
   );

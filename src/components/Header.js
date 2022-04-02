@@ -1,23 +1,29 @@
 import React, { useState } from "react";
-import { Avatar, Badge } from "@mui/material";
+import { Badge } from "@mui/material";
 import { BsSearch, BsFillPersonFill } from "react-icons/bs";
 import { BiCategoryAlt } from "react-icons/bi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import Cart from "./Cart";
+import { connect } from "react-redux";
 
-function Header(props) {
+function Header({ shopName }) {
   const [showCart, setShowCart] = useState(false);
+  const navigate = useNavigate();
   return (
     //   header__container
-    <div className="flex justify-between items-center p-3 w-full border-b-2">
+    <header className="flex justify-between items-center p-3 w-full border-b-2 bg-white">
       {/* header__container__shopname */}
+
       {showCart && <Cart showCart={showCart} setShowCart={setShowCart} />}
-      <div className="flex justify-center items-center ml-5">
-        <img className="w-14 h-14" src="/logo192.png" alt="business" />
-        <p className="text-2xl font-semibold ml-4">Mohsin Books</p>
-      </div>
+      <a href="/">
+        <div className="flex justify-center items-center ml-5">
+          <img className="w-14 h-14" src="/logo192.png" alt="business" />
+          <p className="text-2xl font-semibold ml-4">{shopName}</p>
+        </div>
+      </a>
       {/* header__container__search */}
-      <div className="flex flex-row items-center justify-center ml-6 mr-6 w-1/3">
+      <div className="flex flex-row items-center justify-center ml-6 mr-6 w-1/3 min-w-max">
         <input
           type="text"
           className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-tl-md rounded-bl-md py-2 px-4 block w-full h-12 text-lg font-normal leading-tight appearance-none"
@@ -29,7 +35,10 @@ function Header(props) {
       </div>
       {/* header__container__icons */}
       <div className="flex flex-row justify-end items-center ml-6 mr-10">
-        <div className="flex flex-row justify-center items-center mr-7 pt-2 pl-3 pr-3 pb-2 rounded-full hover:bg-gray-300 cursor-pointer">
+        <div
+          className="flex flex-row justify-center items-center mr-7 pt-2 pl-3 pr-3 pb-2 rounded-full hover:bg-gray-300 cursor-pointer"
+          onClick={() => navigate("categories")}
+        >
           <BiCategoryAlt size={25} />
           <p className="text-gray-700 font-bold text-xl ml-2">Categories</p>
         </div>
@@ -48,8 +57,11 @@ function Header(props) {
           <p className="text-gray-700 font-bold text-xl ml-2">Account</p>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
+const mapStateToProps = (state) => ({
+  shopName: state.shop.shopName,
+});
 
-export default Header;
+export default connect(mapStateToProps)(Header);

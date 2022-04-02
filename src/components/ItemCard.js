@@ -1,21 +1,109 @@
-import { Button } from "@mui/material";
-import React from "react";
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Skeleton,
+} from "@mui/material";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { loadCurrentItem } from "../redux/Shopping/shopping.actions";
 
-function ItemCard() {
+function ItemCard({ item, loadCurrentItem }) {
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
   return (
-    <div className="max-w-sm h-1/2 rounded shadow-lg mx-5 my-5 hover:shadow-2xl hover:transition duration-300 ease-in-out">
-      <img className="w-full" src="logo192.png" alt="Sunset in the mountains" />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">Shampoo</div>
-        <p className="text-gray-700 text-base">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus
-        </p>
-      </div>
-      <div className="px-6 pt-4 pb-2">
-        <Button color="secondary">Add</Button>
-      </div>
-    </div>
+    <span className="pl-3 pr-3">
+      <Card className="w-80 h-full min-h-max rounded-lg">
+        <Link to={`/products/${item.name}`}>
+          <CardActionArea onClick={() => loadCurrentItem(item)}>
+            {loading ? (
+              <Skeleton
+                animation="wave"
+                variant="rect"
+                width="20rem"
+                height="18rem"
+              />
+            ) : (
+              <CardMedia
+                component="img"
+                className="w-80 h-72"
+                image={
+                  item.images
+                    ? item.images.length > 0
+                      ? item.images[0]
+                      : "/assets/default-image.png"
+                    : "/assets/default-image.png"
+                }
+                alt="item"
+              />
+            )}
+            <CardContent className="flex flex-col justify-center items-start p-3 h-full">
+              {loading ? (
+                <Skeleton
+                  animation="wave"
+                  variant="text"
+                  width="10rem"
+                  height="2rem"
+                />
+              ) : (
+                <p className="text-xl font-semibold">{item.name}</p>
+              )}
+              {loading ? (
+                <Skeleton
+                  animation="wave"
+                  variant="text"
+                  width="13rem"
+                  height="2rem"
+                />
+              ) : (
+                <p className="text-gray-700 font-normal text-xl">
+                  {item.description}
+                </p>
+              )}
+              {loading ? (
+                <Skeleton
+                  animation="wave"
+                  variant="text"
+                  width="10rem"
+                  height="2rem"
+                />
+              ) : (
+                <p className="text-gray-700 font-bold text-xl">{item.price}</p>
+              )}
+            </CardContent>
+          </CardActionArea>
+        </Link>
+        <CardActions className="py-5">
+          {loading ? (
+            <Skeleton
+              animation="wave"
+              variant="rect"
+              width="9rem"
+              height="2.5rem"
+            />
+          ) : (
+            <Button variant="contained" color="primary" disableElevation>
+              Add to cart
+            </Button>
+          )}
+        </CardActions>
+      </Card>
+    </span>
   );
 }
 
-export default ItemCard;
+const mapDispatchToProps = (dispatch) => ({
+  // addToCart: (item) => dispatch(addToCart(item)),
+  loadCurrentItem: (item) => dispatch(loadCurrentItem(item)),
+});
+
+export default connect(null, mapDispatchToProps)(ItemCard);
