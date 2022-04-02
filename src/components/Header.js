@@ -6,16 +6,22 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Cart from "./Cart";
 import { connect } from "react-redux";
+import { motion } from "framer-motion";
 
 function Header({ shopName }) {
   const [showCart, setShowCart] = useState(false);
   const navigate = useNavigate();
   return (
     //   header__container
-    <header className="flex justify-between items-center p-3 w-full border-b-2 bg-white">
+    <header className="flex justify-between items-center p-3 w-full border-b-2 bg-[#FFFFFF]">
       {/* header__container__shopname */}
-
-      {showCart && <Cart showCart={showCart} setShowCart={setShowCart} />}
+      <motion.div
+        animate={{
+          opacity: 1,
+        }}
+      >
+        <Cart showCart={showCart} setShowCart={setShowCart} />
+      </motion.div>
       <a href="/">
         <div className="flex justify-center items-center ml-5">
           <img className="w-14 h-14" src="/logo192.png" alt="business" />

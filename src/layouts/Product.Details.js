@@ -1,15 +1,7 @@
 import React, { useState } from "react";
-import { Colors } from "../constants/Colors";
 import { connect } from "react-redux";
-import {
-  Breadcrumbs,
-  Button,
-  Card,
-  CardMedia,
-  Chip,
-  Link,
-} from "@mui/material";
-import { useParams } from "react-router-dom";
+import { Breadcrumbs, Button, Card, CardMedia, Chip } from "@mui/material";
+import { useParams, Link } from "react-router-dom";
 import NoDisplay from "../components/NoDisplay";
 
 function ProductDetails({ shopName, currentItem }) {
@@ -18,21 +10,22 @@ function ProductDetails({ shopName, currentItem }) {
 
   return (
     <div
-      className={`flex flex-col items-start justify-start p-10 w-full h-full bg-[${Colors.primary}]`}
+      className={`flex flex-col items-start justify-start p-10 w-full h-full bg-[#F7FBFF]`}
     >
       {currentItem && name === currentItem.name ? (
         <>
-          <p
-            className={`text-2xl font-semibold font-poppins text-[${Colors.textColor}]`}
-          >
+          <p className={`text-2xl font-semibold font-poppins text-[#3A3845]`}>
             Product Details
           </p>
           <span className="my-5">
             <Breadcrumbs aria-label="breadcrumb">
-              <Link underline="hover" href="/">
+              <Link to="/" className={`hover:underline text-[#1565c0]`}>
                 {shopName}
               </Link>
-              <Link underline="hover" className="cursor-pointer">
+              <Link
+                to={`/products/${name}`}
+                className={`hover:underline text-[#1565c0]`}
+              >
                 {name}
               </Link>
             </Breadcrumbs>
@@ -75,17 +68,17 @@ function ProductDetails({ shopName, currentItem }) {
             <div className="flex flex-col justify-between w-full h-[22rem] mx-10 ">
               <span className="flex flex-col justify-between h-40">
                 <p
-                  className={`text-xl font-semibold font-poppins text-[${Colors.textColor}]`}
+                  className={`text-xl font-semibold font-poppins text-[#3A3845]`}
                 >
                   {currentItem.name}
                 </p>
                 <p
-                  className={`text-lg font-normal font-poppins text-[${Colors.textColor}]`}
+                  className={`text-lg font-normal font-poppins text-[#3A3845]`}
                 >
                   {currentItem.description}
                 </p>
                 <p
-                  className={`text-lg font-normal font-poppins text-[${Colors.textColor}]`}
+                  className={`text-lg font-normal font-poppins text-[#3A3845]`}
                 >
                   {currentItem.pair}
                 </p>
