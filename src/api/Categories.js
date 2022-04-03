@@ -65,8 +65,7 @@ export const Categories = [
     name: "Cosmetics",
     products: [
       {
-        id: 2,
-
+        id: 1,
         name: "Soap",
         category_id: 2,
         description: "This is the cool soap",
@@ -104,13 +103,13 @@ export const Categories = [
     name: "Home & Kitchen",
     products: [
       {
-        id: 6,
-
+        id: 1,
         name: "Frying Pan",
         category_id: 8,
         description: "This is the cool frying pan",
         price: 400,
         sizes: ["Small", "Medium", "large"],
+        colors: ["Red", "Blue", "Green"],
       },
     ],
   },
@@ -149,8 +148,7 @@ export const Categories = [
     name: "Automotive",
     products: [
       {
-        id: 3,
-
+        id: 1,
         name: "Bikes",
         category_id: 15,
         description: "This is the cool bikes",
@@ -163,16 +161,14 @@ export const Categories = [
     name: "Sports",
     products: [
       {
-        id: 4,
-
+        id: 1,
         name: "Cricket Bag",
         category_id: 16,
         description: "This is the cool cricket bag",
         price: 400,
       },
       {
-        id: 5,
-
+        id: 2,
         name: "Cricket Bat",
         category_id: 16,
         description: "This is the cool cricket bat",

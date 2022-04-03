@@ -27,22 +27,40 @@ const shoppingReducer = (state = initialState, action) => {
       });
 
       const inCart = state.cart.find((item) =>
-        item.id === action.payload.item_id ? true : false
+        item.id === action.payload.item_id &&
+        item.category_id === action.payload.category_id
+          ? true
+          : false
       );
+
       return {
         ...state,
         cart: inCart
           ? state.cart.map((item) =>
-              item.id === action.payload.item_id
+              item.id === action.payload.item_id &&
+              item.category_id === action.payload.category_id
                 ? { ...item, quantity: item.quantity + 1 }
                 : item
             )
-          : [...state.cart, { ...prod, quantity: 1 }],
+          : [
+              ...state.cart,
+              {
+                ...prod,
+                quantity: 1,
+                color: action.payload.color,
+                size: action.payload.size,
+              },
+            ],
       };
+
     case actionsTypes.REMOVE_FROM_CART:
       return {
         ...state,
-        cart: state.cart.filter((item) => item.id !== action.payload.item_id),
+        cart: state.cart.filter(
+          (item) =>
+            item.id !== action.payload.item_id &&
+            item.category_id !== action.payload.category_id
+        ),
       };
     case actionsTypes.ADJUST_QUANTITY:
       return {

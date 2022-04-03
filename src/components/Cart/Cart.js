@@ -1,6 +1,6 @@
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
+import { ImCancelCircle } from "react-icons/im";
 import React from "react";
-import { BsArrowBarLeft } from "react-icons/bs";
 import CartItem from "./CartItem";
 import { AnimatePresence, motion } from "framer-motion";
 import { connect } from "react-redux";
@@ -8,6 +8,15 @@ import { clearCart } from "../../redux/Shopping/shopping.actions";
 import CartTotal from "./CartTotal";
 
 function Cart({ showCart = false, setShowCart = () => {}, clearCart, cart }) {
+  const [cartCount, setCartCount] = React.useState(0);
+
+  React.useEffect(() => {
+    let count = 0;
+    cart.forEach((item) => {
+      count += item.quantity;
+    });
+    setCartCount(count);
+  }, [cart, cartCount]);
   return (
     <AnimatePresence>
       {showCart && (
@@ -26,11 +35,20 @@ function Cart({ showCart = false, setShowCart = () => {}, clearCart, cart }) {
           <div className="flex flex-row justify-between w-full items-center border-b-2 border-black p-7">
             <span className="flex items-center">
               <IconButton onClick={() => setShowCart(!showCart)}>
-                <BsArrowBarLeft size={25} />
+                <ImCancelCircle size={25} />
               </IconButton>
               <p className="text-2xl font-semibold ml-5">Cart</p>
+              <span className="flex justify-center items-center p-5 border-2 rounded-md mx-5">
+                <p className="font-semibold font-poppins text-gray-700">
+                  {cartCount}
+                </p>
+              </span>
             </span>
-            <IconButton onClick={() => clearCart()}>
+            <IconButton
+              onClick={() => {
+                clearCart();
+              }}
+            >
               <p className="text-2xl font-semibold ml-5">Clear cart</p>
             </IconButton>
           </div>
@@ -39,7 +57,7 @@ function Cart({ showCart = false, setShowCart = () => {}, clearCart, cart }) {
               return <CartItem key={item.id} item={item} />;
             })}
           </div>
-          <CartTotal />
+          <CartTotal setShow={setShowCart} />
         </motion.div>
       )}
     </AnimatePresence>

@@ -11,9 +11,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { loadCurrentItem, addToCart } from "../redux/Shopping/shopping.actions";
+import VariantModal from "./VariantModal";
 
 function ItemCard({ item, loadCurrentItem, addToCart }) {
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  const handleModalOpen = (item) => {
+    loadCurrentItem(item);
+    setOpen(true);
+  };
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -95,13 +102,19 @@ function ItemCard({ item, loadCurrentItem, addToCart }) {
               variant="contained"
               color="primary"
               disableElevation
-              onClick={() => addToCart(item.id, item.category_id)}
+              onClick={() => {
+                (item.sizes && item.sizes.length > 0) ||
+                (item.colors && item.colors.length > 0)
+                  ? handleModalOpen(item)
+                  : addToCart(item.id, item.category_id);
+              }}
             >
               Add to cart
             </Button>
           )}
         </CardActions>
       </Card>
+      <VariantModal open={open} setOpen={setOpen} />
     </span>
   );
 }

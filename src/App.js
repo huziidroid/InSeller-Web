@@ -8,6 +8,8 @@ import Footer from "./components/Footer";
 import NoRoutes from "./components/NoRoutes";
 import ProductDetails from "./layouts/Product.Details";
 import CategoryProducts from "./layouts/Category.Products";
+import Checkout from "./layouts/Checkout";
+import UserDetails from "./layouts/UserDetails";
 import { connect } from "react-redux";
 
 function App({ categories }) {
@@ -21,8 +23,10 @@ function App({ categories }) {
         <Routes>
           <Route path="/" element={<Products />} />
           <Route path="categories" element={<Category />} />
+          <Route path="checkout" element={<Checkout />} />
           <Route path="products/:name" element={<ProductDetails />} />
           <Route path="categories/:name" element={<CategoryProducts />} />
+          <Route path="account" element={<UserDetails />} />
           <Route path="*" element={<NoRoutes />} />
         </Routes>
       </div>

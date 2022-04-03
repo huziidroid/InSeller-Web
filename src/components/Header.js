@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Badge } from "@mui/material";
+import { Badge, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import { BsSearch, BsFillPersonFill } from "react-icons/bs";
 import { BiCategoryAlt } from "react-icons/bi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -12,6 +12,9 @@ function Header({ shopName, cart }) {
   const [showCart, setShowCart] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
   React.useEffect(() => {
     let count = 0;
@@ -66,10 +69,37 @@ function Header({ shopName, cart }) {
           </Badge>
           <p className="text-gray-700 font-bold text-xl ml-2">Cart</p>
         </div>
-        <div className="flex flex-row justify-center items-center mr-7 pt-2 pl-3 pr-3 pb-2 rounded-full hover:bg-gray-300 cursor-pointer">
-          {/* <Avatar /> */}
-          <BsFillPersonFill size={25} />
-          <p className="text-gray-700 font-bold text-xl ml-2">Account</p>
+        <div className="flex flex-row justify-center items-center mr-7  rounded-full hover:bg-gray-300 cursor-pointer">
+          <IconButton
+            id="basic-button"
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+          >
+            <BsFillPersonFill size={25} />
+            <p className="text-gray-700 font-bold text-xl ml-2">Account</p>
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={() => setAnchorEl(null)}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem
+              onClick={() => {
+                setAnchorEl(null);
+                navigate("/account");
+              }}
+            >
+              Profile
+            </MenuItem>
+            <MenuItem onClick={() => setAnchorEl(null)}>Contact Us</MenuItem>
+            <MenuItem onClick={() => setAnchorEl(null)}>Logout</MenuItem>
+          </Menu>
         </div>
       </div>
     </header>

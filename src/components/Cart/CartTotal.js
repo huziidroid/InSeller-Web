@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-function CartTotal({ cart }) {
+function CartTotal({ cart, setShow }) {
+  const navigate = useNavigate();
   const [total, setTotal] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
   useEffect(() => {
@@ -33,14 +35,20 @@ function CartTotal({ cart }) {
         <p className="text-xl font-semibold text-gray-500 antialiased">Total</p>
         <p className="text-xl font-semibold text-gray-900">{total}</p>
       </span>
-      <Button
-        className="w-full h-20"
-        color="success"
-        variant="contained"
-        disableElevation
-      >
-        Procced to Checkout
-      </Button>
+      {cart.length > 0 ? (
+        <Button
+          className="w-full h-20"
+          color="success"
+          variant="contained"
+          disableElevation
+          onClick={() => {
+            setShow(false);
+            navigate("checkout");
+          }}
+        >
+          Procced to Checkout
+        </Button>
+      ) : null}
     </div>
   );
 }
