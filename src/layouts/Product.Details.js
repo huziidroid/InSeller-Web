@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { Breadcrumbs, Button, Card, CardMedia, Chip } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
 import NoDisplay from "../components/NoDisplay";
+import { addToCart } from "../redux/Shopping/shopping.actions";
 
-function ProductDetails({ shopName, currentItem }) {
+function ProductDetails({ shopName, currentItem, addToCart }) {
   const { name } = useParams();
   const [key, setKey] = useState(0);
-
   return (
     <div
       className={`flex flex-col items-start justify-start p-10 w-full h-full bg-[#F7FBFF]`}
@@ -85,7 +85,7 @@ function ProductDetails({ shopName, currentItem }) {
                 <p
                   className={`text-2xl font-normal font-poppins text-green-500`}
                 >
-                  {currentItem.price}
+                  {`Rs. ${currentItem.price}`}
                 </p>
               </span>
               {currentItem.sizes && (
@@ -125,7 +125,14 @@ function ProductDetails({ shopName, currentItem }) {
                 </span>
               )}
               <span>
-                <Button color="primary" variant="contained" disableElevation>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  disableElevation
+                  onClick={() =>
+                    addToCart(currentItem.id, currentItem.category_id)
+                  }
+                >
                   Add to cart
                 </Button>
               </span>
@@ -145,5 +152,11 @@ const mapStateToProps = (state) => {
     currentItem: state.shop.currentItem,
   };
 };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (item_id, category_id) =>
+      dispatch(addToCart(item_id, category_id)),
+  };
+};
 
-export default connect(mapStateToProps)(ProductDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

@@ -10,9 +10,9 @@ import {
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { loadCurrentItem } from "../redux/Shopping/shopping.actions";
+import { loadCurrentItem, addToCart } from "../redux/Shopping/shopping.actions";
 
-function ItemCard({ item, loadCurrentItem }) {
+function ItemCard({ item, loadCurrentItem, addToCart }) {
   const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
@@ -77,7 +77,7 @@ function ItemCard({ item, loadCurrentItem }) {
                   height="2rem"
                 />
               ) : (
-                <p className="text-gray-700 font-bold text-xl">{item.price}</p>
+                <p className="text-gray-700 font-bold text-xl">{`Rs. ${item.price}`}</p>
               )}
             </CardContent>
           </CardActionArea>
@@ -91,7 +91,12 @@ function ItemCard({ item, loadCurrentItem }) {
               height="2.5rem"
             />
           ) : (
-            <Button variant="contained" color="primary" disableElevation>
+            <Button
+              variant="contained"
+              color="primary"
+              disableElevation
+              onClick={() => addToCart(item.id, item.category_id)}
+            >
               Add to cart
             </Button>
           )}
@@ -102,7 +107,7 @@ function ItemCard({ item, loadCurrentItem }) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  // addToCart: (item) => dispatch(addToCart(item)),
+  addToCart: (item, category_id) => dispatch(addToCart(item, category_id)),
   loadCurrentItem: (item) => dispatch(loadCurrentItem(item)),
 });
 

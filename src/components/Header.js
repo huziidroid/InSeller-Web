@@ -4,13 +4,22 @@ import { BsSearch, BsFillPersonFill } from "react-icons/bs";
 import { BiCategoryAlt } from "react-icons/bi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import Cart from "./Cart";
+import Cart from "./Cart/Cart";
 import { connect } from "react-redux";
 import { motion } from "framer-motion";
 
-function Header({ shopName }) {
+function Header({ shopName, cart }) {
   const [showCart, setShowCart] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    let count = 0;
+    cart.forEach((item) => {
+      count += item.quantity;
+    });
+    setCartCount(count);
+  }, [cart, cartCount]);
   return (
     //   header__container
     <header className="flex justify-between items-center p-3 w-full border-b-2 bg-[#FFFFFF]">
@@ -52,7 +61,7 @@ function Header({ shopName }) {
           className="flex flex-row justify-center items-center mr-7 pt-2 pl-3 pr-3 pb-2 rounded-full hover:bg-gray-300 cursor-pointer"
           onClick={() => setShowCart(true)}
         >
-          <Badge color="secondary" badgeContent={4}>
+          <Badge color="secondary" badgeContent={cartCount}>
             <AiOutlineShoppingCart size={25} />
           </Badge>
           <p className="text-gray-700 font-bold text-xl ml-2">Cart</p>
@@ -68,6 +77,7 @@ function Header({ shopName }) {
 }
 const mapStateToProps = (state) => ({
   shopName: state.shop.shopName,
+  cart: state.shop.cart,
 });
 
 export default connect(mapStateToProps)(Header);

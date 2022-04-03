@@ -1,16 +1,16 @@
 import { actionsTypes } from "./shopping.action-types";
 
-export const addToCart = (itemId) => {
+export const addToCart = (item_id, category_id) => {
   return {
     type: actionsTypes.ADD_TO_CART,
-    payload: { id: itemId },
+    payload: { item_id: item_id, category_id: category_id },
   };
 };
 
-export const removeFromCart = (itemId) => {
+export const removeFromCart = (item_id) => {
   return {
     type: actionsTypes.REMOVE_FROM_CART,
-    payload: { id: itemId },
+    payload: { item_id: item_id },
   };
 };
 
