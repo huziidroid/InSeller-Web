@@ -19,10 +19,10 @@ export const removeFromCart = (item_id, category_id) => {
   };
 };
 
-export const adjustQuantity = (itemId, quantity) => {
+export const adjustQuantity = (item_id, category_id, quantity) => {
   return {
     type: actionsTypes.ADJUST_QUANTITY,
-    payload: { id: itemId, quantity: quantity },
+    payload: { id: item_id, quantity: quantity, category_id: category_id },
   };
 };
 

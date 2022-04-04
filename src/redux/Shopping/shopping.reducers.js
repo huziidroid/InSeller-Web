@@ -54,11 +54,12 @@ const shoppingReducer = (state = initialState, action) => {
       };
 
     case actionsTypes.REMOVE_FROM_CART:
+      console.log(action.payload);
       return {
         ...state,
         cart: state.cart.filter(
           (item) =>
-            item.id !== action.payload.item_id &&
+            item.id !== action.payload.item_id ||
             item.category_id !== action.payload.category_id
         ),
       };
@@ -66,7 +67,8 @@ const shoppingReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: state.cart.map((item) =>
-          item.id === action.payload.id
+          item.id === action.payload.id &&
+          item.category_id === action.payload.category_id
             ? { ...item, quantity: action.payload.quantity }
             : item
         ),

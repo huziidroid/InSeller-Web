@@ -9,7 +9,11 @@ function Incrementer({ item, adjustQuantity }) {
       <IconButton
         className="mx-2 h-full"
         onClick={() => {
-          adjustQuantity(item.id, item.quantity === 1 ? 1 : item.quantity - 1);
+          adjustQuantity(
+            item.id,
+            item.category_id,
+            item.quantity === 1 ? 1 : item.quantity - 1
+          );
         }}
       >
         <AiOutlineMinus className="text-red-500" size={25} />
@@ -20,7 +24,7 @@ function Incrementer({ item, adjustQuantity }) {
       <IconButton
         className="mx-2 h-full"
         onClick={() => {
-          adjustQuantity(item.id, item.quantity + 1);
+          adjustQuantity(item.id, item.category_id, item.quantity + 1);
         }}
       >
         <AiOutlinePlus className="text-green-500" size={25} />
@@ -29,7 +33,8 @@ function Incrementer({ item, adjustQuantity }) {
   );
 }
 const mapDispatchToProps = (dispatch) => ({
-  adjustQuantity: (item, quantity) => dispatch(adjustQuantity(item, quantity)),
+  adjustQuantity: (item_id, category_id, quantity) =>
+    dispatch(adjustQuantity(item_id, category_id, quantity)),
 });
 
 export default connect(null, mapDispatchToProps)(Incrementer);
