@@ -11,6 +11,7 @@ import CategoryProducts from "./layouts/Category.Products";
 import Checkout from "./layouts/Checkout";
 import UserDetails from "./layouts/UserDetails";
 import { connect } from "react-redux";
+import Address from "./layouts/Address";
 
 function App({ categories }) {
   return (
@@ -24,6 +25,7 @@ function App({ categories }) {
           <Route path="/" element={<Products />} />
           <Route path="categories" element={<Category />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="address" element={<Address />} />
           <Route path="products/:name" element={<ProductDetails />} />
           <Route path="categories/:name" element={<CategoryProducts />} />
           <Route path="account" element={<UserDetails />} />
