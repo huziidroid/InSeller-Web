@@ -5,7 +5,7 @@ import ItemCard from "../components/ItemCard";
 import NoDisplay from "../components/NoDisplay";
 import { Link } from "react-router-dom";
 
-function CategoryProducts({ shopName, category }) {
+function CategoryProducts({ store, category }) {
   return (
     <div
       className={`flex flex-col w-full h-full justify-center px-10 py-5 bg-[#F7FBFF]`}
@@ -13,7 +13,7 @@ function CategoryProducts({ shopName, category }) {
       <span className="px-12 py-5">
         <Breadcrumbs aria-label="breadcrumb">
           <Link to="/" className="hover:underline text-[#1565c0]">
-            {shopName}
+            {store ? store.name : ""}
           </Link>
           <Link to="/categories" className="hover:underline text-[#1565c0]">
             categories
@@ -28,11 +28,11 @@ function CategoryProducts({ shopName, category }) {
         </Breadcrumbs>
       </span>
 
-      {category.products.length > 0 ? (
+      {category.items.length > 0 ? (
         <div
           className={`flex flex-row flex-wrap items-start justify-start px-10 w-full h-full bg-[#F7FBFF]`}
         >
-          {category.products.map((item, key) => {
+          {category.items.map((item, key) => {
             return (
               <span className="my-2 mx-3" key={key}>
                 <ItemCard item={item} />
@@ -49,7 +49,7 @@ function CategoryProducts({ shopName, category }) {
 
 const mapStateToProps = (state) => {
   return {
-    shopName: state.shop.shopName,
+    store: state.shop.store,
     category: state.shop.category,
   };
 };

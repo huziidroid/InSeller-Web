@@ -5,7 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import { addToCart } from "../redux/Shopping/shopping.actions";
 import { useNavigate } from "react-router-dom";
 
-function ProductDetails({ shopName, currentItem, addToCart, cart }) {
+function ProductDetails({ store, currentItem, addToCart, cart }) {
   const { name } = useParams();
   const [key, setKey] = useState(0);
   const [activeSize, setActiveSize] = useState("");
@@ -35,7 +35,7 @@ function ProductDetails({ shopName, currentItem, addToCart, cart }) {
       <span className="my-5">
         <Breadcrumbs aria-label="breadcrumb">
           <Link to="/" className={`hover:underline text-[#1565c0]`}>
-            {shopName}
+            {store.name}
           </Link>
           <Link
             to={`/products/${name}`}
@@ -52,7 +52,9 @@ function ProductDetails({ shopName, currentItem, addToCart, cart }) {
               <img
                 src={
                   currentItem.images
-                    ? currentItem.images[key]
+                    ? currentItem.images.length > 0
+                      ? currentItem.images[key].image
+                      : "/assets/default-image.png"
                     : "/assets/default-image.png"
                 }
                 alt="product"
@@ -64,7 +66,7 @@ function ProductDetails({ shopName, currentItem, addToCart, cart }) {
             {currentItem.images ? (
               currentItem.images.map((image, index) => (
                 <img
-                  src={image}
+                  src={image.image}
                   key={index}
                   onClick={() => setKey(index)}
                   alt="product"
@@ -89,10 +91,10 @@ function ProductDetails({ shopName, currentItem, addToCart, cart }) {
               {currentItem.description}
             </p>
             <p className={`text-lg font-normal font-poppins text-[#3A3845]`}>
-              {currentItem.price}
+              {`Per ${currentItem.unit}`}
             </p>
             <p className={`text-2xl font-normal font-poppins text-green-500`}>
-              {`Rs. ${currentItem.price}`}
+              {`Rs. ${currentItem.selling_price}`}
             </p>
           </span>
           {currentItem.sizes && (
@@ -178,7 +180,7 @@ function ProductDetails({ shopName, currentItem, addToCart, cart }) {
 
 const mapStateToProps = (state) => {
   return {
-    shopName: state.shop.shopName,
+    store: state.shop.store,
     currentItem: state.shop.currentItem,
     cart: state.shop.cart,
   };

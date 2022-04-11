@@ -7,8 +7,8 @@ function Products({ categories }) {
     <div>
       {categories.map((item, key) => {
         return (
-          item.products.length > 0 && (
-            <ItemSlider category={item} product={item.products} key={key} />
+          item.items.length > 0 && (
+            <ItemSlider category={item} product={item.items} key={key} />
           )
         );
       })}
@@ -16,7 +16,7 @@ function Products({ categories }) {
   );
 }
 const mapStateToProps = (state) => ({
-  categories: state.shop.categories,
+  categories: state.shop.categoriesProducts,
 });
 
 export default connect(mapStateToProps)(Products);

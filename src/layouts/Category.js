@@ -5,7 +5,7 @@ import CategoryCard from "../components/CategoryCard";
 import { Breadcrumbs } from "@mui/material";
 import { Link } from "react-router-dom";
 
-function Category({ categories, shopName }) {
+function Category({ categories, store }) {
   return (
     <div
       className={`flex flex-col w-full h-full justify-center px-10 py-5 bg-[#F7FBFF]`}
@@ -13,7 +13,7 @@ function Category({ categories, shopName }) {
       <span className="px-12 py-5">
         <Breadcrumbs aria-label="breadcrumb">
           <Link to="/" className={`hover:underline text-[#1565c0]`}>
-            {shopName}
+            {store ? store.name : ""}
           </Link>
           <Link to="/categories" className={`hover:underline text-[#1565c0]`}>
             categories
@@ -37,8 +37,8 @@ function Category({ categories, shopName }) {
 }
 
 const mapStateToProps = (state) => ({
-  categories: state.shop.categories,
-  shopName: state.shop.shopName,
+  categories: state.shop.categoriesProducts,
+  store: state.shop.store,
 });
 
 export default connect(mapStateToProps)(Category);

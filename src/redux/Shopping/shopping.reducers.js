@@ -1,22 +1,20 @@
-import { Categories } from "../../api/Categories";
-import { Products } from "../../api/Products";
 import { actionsTypes } from "./shopping.action-types";
 
 const initialState = {
   cart: [],
   currentItem: {},
-  categories: Categories,
-  products: Products,
+  categoriesProducts: [],
   category: {},
-  shopName: "Mohsin Books",
+  store: {},
 };
 
 const shoppingReducer = (state = initialState, action) => {
+  console.log();
   switch (action.type) {
     case actionsTypes.ADD_TO_CART:
       let prod;
-      state.categories.forEach((category) => {
-        category.products.forEach((product) => {
+      state.categoriesProducts.forEach((category) => {
+        category.items.forEach((product) => {
           if (
             product.id === action.payload.item_id &&
             product.category_id === action.payload.category_id
@@ -54,7 +52,6 @@ const shoppingReducer = (state = initialState, action) => {
       };
 
     case actionsTypes.REMOVE_FROM_CART:
-      console.log(action.payload);
       return {
         ...state,
         cart: state.cart.filter(
@@ -87,6 +84,16 @@ const shoppingReducer = (state = initialState, action) => {
       return {
         ...state,
         category: action.payload,
+      };
+    case actionsTypes.SET_STORE:
+      return {
+        ...state,
+        store: action.payload.store,
+      };
+    case actionsTypes.SET_CATEGORIES_PRODUCTS:
+      return {
+        ...state,
+        categoriesProducts: action.payload.categoriesProducts,
       };
     default:
       return state;

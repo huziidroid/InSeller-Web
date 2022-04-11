@@ -24,7 +24,7 @@ function CartItem({ item, removeFromCart }) {
       <Incrementer item={item} />
       <span className="flex flex-row justify-between items-center">
         <p className="text-xl font-semibold mx-3">{`Rs. ${
-          +item.price * +item.quantity
+          +item.selling_price * +item.quantity
         }`}</p>
         <IconButton
           onClick={() => {

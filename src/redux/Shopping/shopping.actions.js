@@ -58,3 +58,30 @@ export const setSize = (size) => {
     payload: { size: size },
   };
 };
+
+export const setStore = (store) => {
+  return {
+    type: actionsTypes.SET_STORE,
+    payload: {
+      store: store,
+    },
+  };
+};
+
+export const setCategoriesProducts = (categoriesProducts) => {
+  return {
+    type: actionsTypes.SET_CATEGORIES_PRODUCTS,
+    payload: {
+      categoriesProducts: categoriesProducts,
+    },
+  };
+};
+
+export const setCategory = (category) => {
+  return {
+    type: actionsTypes.SET_CATEGORY,
+    payload: {
+      category: category,
+    },
+  };
+};

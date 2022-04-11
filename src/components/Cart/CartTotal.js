@@ -11,8 +11,8 @@ function CartTotal({ cart, setShow }) {
     let price = 0;
     let sub_price = 0;
     cart.forEach((item) => {
-      price += item.price * item.quantity;
-      sub_price += item.price * item.quantity;
+      price += item.selling_price * item.quantity;
+      sub_price += item.selling_price * item.quantity;
     });
     setTotal(price);
     setSubTotal(sub_price);

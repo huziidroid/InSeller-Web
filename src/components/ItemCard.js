@@ -46,7 +46,7 @@ function ItemCard({ item, loadCurrentItem, addToCart }) {
                 image={
                   item.images
                     ? item.images.length > 0
-                      ? item.images[0]
+                      ? item.images[0].image
                       : "/assets/default-image.png"
                     : "/assets/default-image.png"
                 }
@@ -84,7 +84,7 @@ function ItemCard({ item, loadCurrentItem, addToCart }) {
                   height="2rem"
                 />
               ) : (
-                <p className="text-gray-700 font-bold text-xl">{`Rs. ${item.price}`}</p>
+                <p className="text-gray-700 font-bold text-xl">{`Rs. ${item.selling_price}`}</p>
               )}
             </CardContent>
           </CardActionArea>
