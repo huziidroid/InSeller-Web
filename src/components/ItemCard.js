@@ -5,123 +5,52 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Skeleton,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { loadCurrentItem, addToCart } from "../redux/Shopping/shopping.actions";
-import VariantModal from "./VariantModal";
+import { selectStore } from "../redux/slice/storeSlice";
+import { addToCart } from "../redux/slice/cartSlice";
 
-function ItemCard({ item, loadCurrentItem, addToCart }) {
-  const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
-
-  const handleModalOpen = (item) => {
-    loadCurrentItem(item);
-    setOpen(true);
-  };
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+function ItemCard({ item }) {
+  const store = useSelector(selectStore);
+  const dispatch = useDispatch();
   return (
-    <span className="pl-3 pr-3">
-      <Card className="w-80 h-full min-h-max rounded-lg">
-        <Link to={`/products/${item.name}`}>
-          <CardActionArea onClick={() => loadCurrentItem(item)}>
-            {loading ? (
-              <Skeleton
-                animation="wave"
-                variant="rect"
-                width="20rem"
-                height="18rem"
-              />
-            ) : (
-              <CardMedia
-                component="img"
-                className="w-80 h-72"
-                image={
-                  item.images
-                    ? item.images.length > 0
-                      ? item.images[0].image
-                      : "/assets/default-image.png"
-                    : "/assets/default-image.png"
-                }
-                alt="item"
-              />
-            )}
+    <span>
+      <Card className="flex flex-col justify-between w-52 h-aut0 min-h-max mx-3">
+        <Link to={`/${store?.url_name}/products/${item.name}`}>
+          <CardActionArea onClick={() => {}}>
+            <CardMedia
+              component="img"
+              className="h-40 object-contain mr-3"
+              image={item.image ? item.image : "/assets/default-image.png"}
+              alt="item"
+            />
             <CardContent className="flex flex-col justify-center items-start p-3 h-full">
-              {loading ? (
-                <Skeleton
-                  animation="wave"
-                  variant="text"
-                  width="10rem"
-                  height="2rem"
-                />
-              ) : (
-                <p className="text-xl font-semibold">{item.name}</p>
-              )}
-              {loading ? (
-                <Skeleton
-                  animation="wave"
-                  variant="text"
-                  width="13rem"
-                  height="2rem"
-                />
-              ) : (
-                <p className="text-gray-700 font-normal text-xl">
-                  {item.description}
-                </p>
-              )}
-              {loading ? (
-                <Skeleton
-                  animation="wave"
-                  variant="text"
-                  width="10rem"
-                  height="2rem"
-                />
-              ) : (
-                <p className="text-gray-700 font-bold text-xl">{`Rs. ${item.selling_price}`}</p>
-              )}
+              <p className="text-md font-semibold">
+                {item.name.slice(0, 20) + "..."}
+              </p>
+              <p className="text-gray-700 font-normal text-sm">
+                {item.description.slice(0, 20) + "..."}
+              </p>
+              <p className="text-gray-700 font-bold text-lg">{`Rs. ${item.selling_price}`}</p>
             </CardContent>
           </CardActionArea>
         </Link>
-        <CardActions className="py-5">
-          {loading ? (
-            <Skeleton
-              animation="wave"
-              variant="rect"
-              width="9rem"
-              height="2.5rem"
-            />
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              disableElevation
-              onClick={() => {
-                (item.sizes && item.sizes.length > 0) ||
-                (item.colors && item.colors.length > 0)
-                  ? handleModalOpen(item)
-                  : addToCart(item.id, item.category_id);
-              }}
-            >
-              Add to cart
-            </Button>
-          )}
+        <CardActions>
+          <Button
+            onClick={() => dispatch(addToCart({ item, quantity: 1 }))}
+            variant="outlined"
+            color="success"
+            disableElevation
+            size="small"
+          >
+            Add to cart
+          </Button>
         </CardActions>
       </Card>
-      <VariantModal open={open} setOpen={setOpen} />
     </span>
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  addToCart: (item, category_id) => dispatch(addToCart(item, category_id)),
-  loadCurrentItem: (item) => dispatch(loadCurrentItem(item)),
-});
-
-export default connect(null, mapDispatchToProps)(ItemCard);
+export default ItemCard;

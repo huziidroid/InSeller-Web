@@ -3,7 +3,6 @@ import {
   CardContent,
   Card,
   CardHeader,
-  Button,
   Tab,
   Tabs,
   useTheme,
@@ -12,6 +11,8 @@ import OrderSummary from "../components/Checkout/OrderSummary";
 import SelectAddress from "../components/Checkout/SelectAddress";
 import SelectPayment from "../components/Checkout/SelectPayment";
 import SwipeableViews from "react-swipeable-views";
+import { useSelector } from "react-redux";
+import { selectAddress } from "../redux/slice/cartSlice";
 
 function a11yProps(index) {
   return {
@@ -23,6 +24,7 @@ function a11yProps(index) {
 function Address() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const address = useSelector(selectAddress);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -33,14 +35,12 @@ function Address() {
   };
   return (
     <div
-      className={`flex flex-col items-center justify-start p-16 w-full h-[90vh] bg-[#F7FBFF]`}
+      className={`flex flex-col items-center justify-start p-16 w-full h-[100vh] bg-[#F7FBFF] no-scrollbar`}
     >
-      <p className="text-2xl font-semibold font-poppins text-gray-700 self-start">
-        Select Address
-      </p>
       <div className="flex flex-row justify-around items-start w-full my-5 mx-5 h-full">
-        <span className="w-[50vw] h-5/6 overflow-y-auto no-scrollbar shadow-xl rounded-lg bg-white">
+        <span className="w-[50vw] h-5/6 shadow-xl rounded-lg bg-white">
           <Card className="w-[50vw]">
+            <CardHeader title="Select Address" />
             <CardContent>
               <Tabs
                 value={value}
@@ -60,26 +60,16 @@ function Address() {
                 onChangeIndex={handleChangeIndex}
               >
                 <SelectAddress value={value} index={0} dir={theme.direction} />
-
                 <SelectPayment value={value} index={1} dir={theme.direction} />
               </SwipeableViews>
             </CardContent>
           </Card>
         </span>
         <OrderSummary
-          button={
-            <Button
-              color="success"
-              variant="contained"
-              className="w-full h-16"
-              disableElevation
-              onClick={() => {
-                setValue(1);
-              }}
-            >
-              Proceed to Payment
-            </Button>
-          }
+          button_title="Proceed to payment"
+          onClick={() => setValue(1)}
+          show_btn={value === 0}
+          disabled={!address?.name.length > 0}
         />
       </div>
     </div>

@@ -10,76 +10,63 @@ import ProductDetails from "./layouts/Product.Details";
 import CategoryProducts from "./layouts/Category.Products";
 import Checkout from "./layouts/Checkout";
 import UserDetails from "./layouts/UserDetails";
-import { connect } from "react-redux";
 import Address from "./layouts/Address";
-import { useEffect } from "react";
+import { useGetStoreByURLQuery } from "./redux/api";
 import { useDispatch } from "react-redux";
-import axios from "axios";
-import { BASE_URL } from "./api/config";
-import {
-  setStore,
-  setCategoriesProducts,
-} from "./redux/Shopping/shopping.actions";
+import React, { useEffect } from "react";
+import { setStore } from "./redux/slice/storeSlice";
+import { CircularProgress } from "@mui/material";
+import { ToastContainer } from "react-toastify";
 
-function App({ categories, store }) {
+function App() {
+  const { data, isSuccess } = useGetStoreByURLQuery(
+    window.location.pathname.split("/")[1]
+  );
   const dispatch = useDispatch();
-
-  const fetchData = async (url_name) => {
-    const store_response = await axios
-      .get(`${BASE_URL}/api/user/store/get-store-by-url/${url_name}`)
-      .catch((err) => {
-        console.log(err);
-      });
-    const category_response = await axios
-      .get(
-        `${BASE_URL}/api/user/store/item/category/get-all-categories-products/${store_response.data.store.id}`
-      )
-      .catch((err) => {
-        console.log(err);
-      });
-    dispatch(setCategoriesProducts(category_response.data.categories));
-    dispatch(setStore(store_response.data.store));
-  };
-
+  const [loading, setLoading] = React.useState(true);
   useEffect(() => {
-    const host = window.location.host;
-    const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
-    if (arr.length > 0) {
-      fetchData(arr[0]);
+    if (isSuccess) {
+      dispatch(setStore(data?.store));
+      setLoading(false);
     }
-  }, []);
-  console.log(store);
-
+  }, [isSuccess]);
   return (
-    <div>
-      <div className="sticky top-0 z-50">
-        <Header />
-        <Slider categories={categories} />
-      </div>
-      <div>
-        <Routes>
-          <Route path="/" element={<Products />} />
-          <Route path="categories" element={<Category />} />
-          <Route path="checkout" element={<Checkout />} />
-          <Route path="address" element={<Address />} />
-          <Route path="products/:name" element={<ProductDetails />} />
-          <Route path="categories/:name" element={<CategoryProducts />} />
-          <Route path="account" element={<UserDetails />} />
-          <Route path="*" element={<NoRoutes />} />
-        </Routes>
-      </div>
-      <div className="">
-        <Footer />
-      </div>
-    </div>
+    <>
+      {loading ? (
+        <div className="flex justify-center items-center m-0 h-[30rem] w-full">
+          <CircularProgress color="primary" />
+        </div>
+      ) : (
+        <div>
+          <div className="sticky top-0 z-50">
+            <Header />
+            <Slider />
+          </div>
+          <div>
+            <Routes>
+              <Route path="/:url_name" element={<Products />} />
+              <Route path="/:url_name/categories" element={<Category />} />
+              <Route path="/:url_name/checkout" element={<Checkout />} />
+              <Route path="/:url_name/address" element={<Address />} />
+              <Route
+                path="/:url_name/products/:name"
+                element={<ProductDetails />}
+              />
+              <Route
+                path="/:url_name/categories/:name"
+                element={<CategoryProducts />}
+              />
+              <Route path="/:url_name/account" element={<UserDetails />} />
+              <Route path="*" element={<NoRoutes />} />
+            </Routes>
+          </div>
+          <div className="">
+            <Footer />
+          </div>
+        </div>
+      )}
+      <ToastContainer />
+    </>
   );
 }
-
-const mapStateToProps = (state) => {
-  return {
-    categories: state.shop.categoriesProducts,
-    store: state.shop.store,
-  };
-};
-
-export default connect(mapStateToProps)(App);
+export default App;

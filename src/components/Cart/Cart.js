@@ -3,58 +3,51 @@ import { ImCancelCircle } from "react-icons/im";
 import React from "react";
 import CartItem from "./CartItem";
 import { AnimatePresence, motion } from "framer-motion";
-import { connect } from "react-redux";
-import { clearCart } from "../../redux/Shopping/shopping.actions";
 import CartTotal from "./CartTotal";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCart, clearCart } from "../../redux/slice/cartSlice";
 
-function Cart({ showCart = false, setShowCart = () => {}, clearCart, cart }) {
-  const [cartCount, setCartCount] = React.useState(0);
-
-  React.useEffect(() => {
-    let count = 0;
-    cart.forEach((item) => {
-      count += item.quantity;
-    });
-    setCartCount(count);
-  }, [cart, cartCount]);
+function Cart({ showCart = false, setShowCart }) {
+  const cart = useSelector(selectCart);
+  const dispatch = useDispatch();
   return (
     <AnimatePresence>
       {showCart && (
         <motion.div
           initial={{ width: 0 }}
           animate={{
-            width: "40vw",
+            width: "38vw",
             transition: { delay: 0.1, duration: 0.5 },
           }}
           exit={{
             width: 0,
             transition: { delay: 0.1, duration: 0.5 },
           }}
-          className={`flex flex-col justify-between items-center top-0 right-0 fixed bg-[#FFFFFF] w-[40vw] h-full shadow-lg z-50 overflow-y-auto no-scrollbar`}
+          className={`flex flex-col justify-between items-center top-0 right-0 fixed bg-[#FFFFFF] w-[38vw] h-[100vh] shadow-lg z-50 overflow-y-auto no-scrollbar`}
         >
-          <div className="flex flex-row justify-between w-full items-center border-b-2 border-black p-7">
+          <div className="flex flex-row justify-between w-full items-center border-b-2 border-black p-4">
             <span className="flex items-center">
               <IconButton onClick={() => setShowCart(!showCart)}>
-                <ImCancelCircle size={25} />
+                <ImCancelCircle size={18} />
               </IconButton>
-              <p className="text-2xl font-semibold ml-5">Cart</p>
-              <span className="flex justify-center items-center p-5 border-2 rounded-md mx-5">
-                <p className="font-semibold font-poppins text-gray-700">
-                  {cartCount}
+              <p className="text-lg font-semibold ml-5">Cart</p>
+              <span className="flex justify-center items-center px-2 py-1 border-2 rounded-md mx-5">
+                <p className="font-semibold font-poppins text-gray-700 text-sm">
+                  {cart.length}
                 </p>
               </span>
             </span>
             <IconButton
               onClick={() => {
-                clearCart();
+                dispatch(clearCart());
               }}
             >
-              <p className="text-2xl font-semibold ml-5">Clear cart</p>
+              <p className="text-base font-semibold">Clear cart</p>
             </IconButton>
           </div>
-          <div className="flex flex-col justify-start items-center w-full h-[60vh] border-b-2 border-dashed border-black overflow-auto no-scrollbar">
-            {cart.map((item) => {
-              return <CartItem key={item.id} item={item} />;
+          <div className="flex flex-col justify-start items-center w-full h-[90vh] border-b-2 border-dashed border-black overflow-auto no-scrollbar">
+            {cart.map((item, index) => {
+              return <CartItem key={index} item={item} />;
             })}
           </div>
           <CartTotal setShow={setShowCart} />
@@ -64,15 +57,4 @@ function Cart({ showCart = false, setShowCart = () => {}, clearCart, cart }) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    clearCart: () => dispatch(clearCart()),
-  };
-};
-const mapStateToProps = (state) => {
-  return {
-    cart: state.shop.cart,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+export default Cart;

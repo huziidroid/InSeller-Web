@@ -1,34 +1,31 @@
 import React from "react";
-import {
-  CardActionArea,
-  CardContent,
-  Card,
-  CardHeader,
-  Button,
-} from "@mui/material";
-import { connect } from "react-redux";
+import { CardActionArea, CardContent, Card, CardHeader } from "@mui/material";
+
 import CartItem from "../components/Cart/CartItem";
 import OrderSummary from "../components/Checkout/OrderSummary";
+import { useSelector } from "react-redux";
+import { selectCart } from "../redux/slice/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { selectStore } from "../redux/slice/storeSlice";
 
-function Checkout({ cart }) {
+function Checkout() {
+  const cart = useSelector(selectCart);
+  const store = useSelector(selectStore);
   const navigate = useNavigate();
+
   return (
     <div
       className={`flex flex-col items-center justify-start p-16 w-full h-[90vh] bg-[#F7FBFF]`}
     >
-      <p className="text-2xl font-semibold font-poppins text-gray-700 self-start">
-        Shopping Bag
-      </p>
       <div className="flex flex-row justify-around items-start w-full my-5 mx-5 h-full">
         <span className="w-[50vw] h-5/6 overflow-y-auto no-scrollbar shadow-xl rounded-lg bg-white">
           <Card className="w-[50vw]">
-            {/* <CardHeader title="Shopping Bag" /> */}
-            {cart.map((item) => {
+            <CardHeader title="Shopping Bag" />
+            {cart.map((item, key) => {
               return (
-                <CardActionArea key={item.id}>
+                <CardActionArea key={key}>
                   <CardContent>
-                    <CartItem item={item} key={item.id} />
+                    <CartItem item={item} key={key} />
                   </CardContent>
                 </CardActionArea>
               );
@@ -36,27 +33,13 @@ function Checkout({ cart }) {
           </Card>
         </span>
         <OrderSummary
-          button={
-            <Button
-              color="success"
-              variant="contained"
-              className="w-full h-16"
-              disableElevation
-              onClick={() => {
-                navigate("/address");
-              }}
-            >
-              Select Address
-            </Button>
-          }
+          button_title="Select Address"
+          onClick={() => navigate(`/${store?.url_name}/address`)}
+          disabled={cart.length === 0}
         />
       </div>
     </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  cart: state.shop.cart,
-});
-
-export default connect(mapStateToProps)(Checkout);
+export default Checkout;
